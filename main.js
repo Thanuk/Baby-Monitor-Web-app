@@ -23,7 +23,7 @@ function preload(){
 }
 
 function draw(){
-    image(video, 0, 0, 640, 420);
+    image(video, 0, 0, 380, 380);
 
     if(status != ""){
         r = random(255);
@@ -32,27 +32,30 @@ function draw(){
         objectDetector.detect(video, gotResults);
 
         for(i = 0; i < object.length; i++){
-            if(object[0].label = "person"){
+            percent = floor(object[i].confidence * 100);
+            fill(r, g, b);
+            text(object[i].label + "" + percent + "%", object[i].x + 15, object[i].y + 15);
+            noFill();
+            stroke(r, g, b);
+            rect(object[i].x - 15, object[i].y - 15, object[i].width, object[i].height);
+
+            if(object[i].label == "person"){
                 document.getElementById("Baby_Detected").innerHTML = "Baby Detected";
                 document.getElementById("Status").innerHTML = "Object Detected";
                 song.stop();
-                percent = floor(object[0].confidence * 100);
-                fill(r, g, b);
-                text(object[0].label + "" + percent + "%", object[0].x + 15, object[0].y + 15);
-                noFill();
-                stroke(r, g, b);
-                rect(object[0].x - 15, object[0].y - 15, object[0].width, object[0].height);
+                console.log("Stop");
             }
     
-            else if(object[0].label = "person"){
+            else{
                 document.getElementById("Baby_Detected").innerHTML = "Baby is not Detected";
-                document.getElementById("Status").innerHTML = "Object Detected";
                 song.play();
+                console.log("Play");
             }    
 
-            if(object.length = 0){
+            if(object.length == 0){
                 document.getElementById("Baby_Detected").innerHTML = "Baby is not Detected";
                 song.play();
+                console.log("Play");
             }
         }
     }
